@@ -20,8 +20,8 @@ class TodoList extends Component {
     }
     
     async loadTodos(){
-    let todos = await apiCalls.getTodos();    
-    .then(todos => this.setState({todos}));
+        let todos = await apiCalls.getTodos();    
+        this.setState({todos});
     }
     
     addTodo(val){
