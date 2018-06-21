@@ -4,11 +4,12 @@ class TodoForm extends Component {
     constructor(props) {
         super(props);
         this.state = {inputValue: 'lolhaha'};
+        this.handleChange = this.handleChange.bind(this);
     }
     
     handleChange(e) {
-        this.setState{(
-            inputValue: e.target.value;
+        this.setState({
+            inputValue: e.target.value
             })
     }
     render() {
