@@ -93,7 +93,11 @@ class TodoList extends Component {
     toggleTodo(todo) {
         const updateURL = APIURL + todo._id;
         fetch(updateURL, {
-            method: "delete"
+            method: "put",
+            headers: new Headers({
+                'Content-Type' : 'application/json',
+            }),
+            body: JSON.stringify({completed: !todo.completed})
             })
         .then(resp => {
             if(!resp.ok) {
@@ -109,8 +113,12 @@ class TodoList extends Component {
             }
             return resp.json();
     })
-    .then(() => {
-        const todos = this.state.todos.filter(todo => todo._id !== id)
+    .then(updatedTodo => {
+        const todos = this.state.todos.map(t => 
+        (t._id === updatedTodo._id)
+        ? {...t, completed: !t.completed}
+        : t
+        )
         this.setState({todos: todos})
     });
     }
