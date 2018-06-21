@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import TodoItem from './TodoItem'; 
 import TodoForm from './TodoForm';
+import * as apiCalls from './api';
 const APIURL = 'api/todos/';
+
 
 class TodoList extends Component {
     constructor(props){
@@ -17,22 +19,8 @@ class TodoList extends Component {
         
     }
     
-    loadTodos(){
-        fetch(APIURL)
-        .then(resp => {
-            if(!resp.ok) {
-                if(resp.status >= 400 && resp.status < 500) {
-                    return resp.json().then(data => {
-                        let err = {errorMessage: data.message};
-                        throw err;
-                    })
-                } else {
-                    let err = {errorMessage: 'Please try again later, server is not responding'};
-                    throw err;
-                }
-            }
-            return resp.json();
-    })
+    async loadTodos(){
+    let todos = await apiCalls.getTodos();    
     .then(todos => this.setState({todos}));
     }
     
