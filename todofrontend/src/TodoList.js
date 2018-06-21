@@ -24,58 +24,15 @@ class TodoList extends Component {
         this.setState({todos});
     }
     
-    addTodo(val){
-        fetch(APIURL, {
-            method: "post",
-            headers: new Headers({
-                'Content-Type': 'application/json',
-            }),
-        body: JSON.stringify({name: val})
-        })
-        .then(resp => {
-            if(!resp.ok) {
-                if(resp.status >= 400 && resp.status < 500) {
-                    return resp.json().then(data => {
-                        let err = {errorMessage: data.message};
-                        throw err;
-                    })
-                } else {
-                    let err = {errorMessage: 'Please try again later, server is not responding'};
-                    throw err;
-                }
-            }
-            return resp.json();
-    })
-    .then(newTodo => {
+    async addTodo(val){
+    let newTodo = await apiCalls.createTodos(val);
         this.setState({todos: [...this.state.todos, newTodo]})
-    });
-        
-    }
+    };
     
-    deleteTodo(id){
-        const deleteURL = APIURL + id;
-        fetch(deleteURL, {
-            method: "delete"
-            })
-        .then(resp => {
-            if(!resp.ok) {
-                if(resp.status >= 400 && resp.status < 500) {
-                    return resp.json().then(data => {
-                        let err = {errorMessage: data.message};
-                        throw err;
-                    })
-                } else {
-                    let err = {errorMessage: 'Please try again later, server is not responding'};
-                    throw err;
-                }
-            }
-            return resp.json();
-    })
-    .then(() => {
-        const todos = this.state.todos.filter(todo => todo._id !== id)
-        this.setState({todos: todos})
-    });
-        
+    async deleteTodo(id){
+    await apiCalls.removeTodos(id);  
+        const todos = this.state.todos.filter(todo => todo._id !== id);
+        this.setState({todos: todos});
     }
     
     toggleTodo(todo) {
