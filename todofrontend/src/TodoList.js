@@ -58,6 +58,9 @@ class TodoList extends Component {
             }
             return resp.json();
     })
+    .then(newTodo => {
+        this.setState({todos: [...this.state.todos, newTodo]})
+    });
         
     }
     
