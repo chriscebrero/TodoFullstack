@@ -25,7 +25,7 @@ class TodoForm extends Component {
                 onChange={this.handleChange}
                 />
                 <button
-                onClick={this.state.handleSubmit}
+                onClick={this.handleSubmit}
                 >
                 Add Todo
                 </button>
