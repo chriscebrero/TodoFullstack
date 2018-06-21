@@ -90,6 +90,31 @@ class TodoList extends Component {
         
     }
     
+    toggleTodo(todo) {
+        const updateURL = APIURL + todo._id;
+        fetch(updateURL, {
+            method: "delete"
+            })
+        .then(resp => {
+            if(!resp.ok) {
+                if(resp.status >= 400 && resp.status < 500) {
+                    return resp.json().then(data => {
+                        let err = {errorMessage: data.message};
+                        throw err;
+                    })
+                } else {
+                    let err = {errorMessage: 'Please try again later, server is not responding'};
+                    throw err;
+                }
+            }
+            return resp.json();
+    })
+    .then(() => {
+        const todos = this.state.todos.filter(todo => todo._id !== id)
+        this.setState({todos: todos})
+    });
+    }
+    
     render(){
         const todos = this.state.todos.map((t) => (
             <TodoItem
